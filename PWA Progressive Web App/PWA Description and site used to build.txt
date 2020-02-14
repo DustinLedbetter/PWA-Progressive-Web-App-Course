@@ -1,0 +1,10 @@
+https://www.freecodecamp.org/news/build-a-pwa-from-scratch-with-html-css-and-javascript/
+
+
+Site guide to creating a PWA progressive web app
+
+Throughout this article, we have seen how amazing PWAs can be. By adding a web app manifest file and a service worker, it really improves the user experience of our traditional web app. This is because PWAs are fast, secure, reliable, and – most importantly – they support offline mode.
+
+Many frameworks out there now come with a service worker file already set-up for us. But knowing how to implement it with Vanilla JavaScript can help you understand PWAs.
+
+And you can go even further with service workers by caching assets dynamically or limiting the size of your cache and so on.
