@@ -1,0 +1,56 @@
+What is a Service Worker?
+Notice that PWAs run only on https because the service worker can access the request and handle it. Therefore security is required.
+
+A service worker is a script that your browser runs in the background in a separate thread. That means it runs in a different place and is completely separate from your web page. That's the reason why it can't manipulate your DOM element.
+
+However, it's super powerful. The service worker can intercept and handle network requests, manage the cache to enable offline support or send push notifications to your users.
+
+
+This code looks intimidating first but it just JavaScript (so don't worry).
+
+We declare the name of our cache staticDevCoffee and the assets to store in the cache. And to perform that action, we need to attach a listener to self.
+
+self is the service worker itself. It enables us to listen to life cycle events and do something in return.
+
+The service worker has several life cycles, and one of them is the install event. It runs when a service worker is installed. It's triggered as soon as the worker executes, and it's only called once per service worker.
+
+When the install event is fired, we run the callback which gives us access to the event object.
+
+Caching something on the browser can take some time to finish because it's asynchronous.
+
+So to handle it, we need to use waitUntil() which, as you might guess, waits for the action to finish.
+
+Once the cache API is ready, we can run the open() method and create our cache by passing its name as an argument to caches.open(staticDevCoffee).
+
+Then it returns a promise, which helps us store our assets in the cache with cache.addAll(assets).
+
+Now, we've successfully cached our assets in the browser. And the next time we load the page, the service worker will handle the request and fetch the cache if we are offline.
+
+Here, we use the fetch event to, well, get back our data. The callback gives us access to fetchEvent. Then we attach respondWith() to prevent the browser's default response. Instead it returns a promise because the fetch action can take time to finish.
+
+And once the cache ready, we apply the caches.match(fetchEvent.request). It will check if something in the cache matches fetchEvent.request. By the way, fetchEvent.request is just our array of assets.
+
+Then, it returns a promise. And finally, we can return the result if it exists or the initial fetch if not.
+
+Now, our assets can be cached and fetched by the service worker which increases the load time of our images quite a bit.
+
+And most important, it makes our app available in offline mode.
+
+
+Register the Service Worker
+In js/app.js
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker
+      .register("/serviceWorker.js")
+      .then(res => console.log("service worker registered"))
+      .catch(err => console.log("service worker not registered", err))
+  })
+}
+Here, we start by checking if the serviceWorker is supported by the current browser (as it's still not supported by all browsers).
+
+Then, we listen to the page load event to register our service worker by passing the name of our file serviceWorker.js to navigator.serviceWorker.register() as a parameter to register our worker.
+
+With this update, we have now transformed our regular web app to a PWA.
+
+
